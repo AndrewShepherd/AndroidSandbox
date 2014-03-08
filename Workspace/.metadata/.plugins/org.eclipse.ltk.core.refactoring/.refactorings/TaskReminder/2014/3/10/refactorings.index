@@ -1,1 +1,6 @@
 1394248062312	Delete element
+1394249461093	Delete element
+1394250212345	Extracts string 'Title' into R.string.title
+1394250290459	Extracts string 'Confirm' into R.string.confirm
+1394250393796	Extracts string 'Edit Activity' into R.string.edit_activity
+1394250515559	Extracts string 'Insert' into R.string.menu_insert

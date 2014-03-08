@@ -57,7 +57,4 @@ public class RemindersDbAdapter {
 	public void close() {
 		mDbHelper.close();
 	}
-	}
-	
-	
 }
