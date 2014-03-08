@@ -14,8 +14,6 @@ public class MainActivity extends ListActivity {
         setContentView(R.layout.reminder_list);
     }
 
-    
-    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -24,8 +22,6 @@ public class MainActivity extends ListActivity {
         return true;
     }
 
-    
-    final static int ACTIVITY_CREATE = 0;
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -33,7 +29,7 @@ public class MainActivity extends ListActivity {
 		{
 			case R.id.menu_insert:
 				Intent startActivityIntent = new Intent(this, ReminderEditActivity.class);
-				startActivityForResult(startActivityIntent, ACTIVITY_CREATE);
+				super.startActivity(startActivityIntent);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
