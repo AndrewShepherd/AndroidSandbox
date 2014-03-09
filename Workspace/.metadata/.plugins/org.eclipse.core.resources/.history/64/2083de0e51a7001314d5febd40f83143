@@ -2,6 +2,7 @@ package com.example.taskreminder;
 
 import java.lang.String;
 import java.util.Calendar;
+import java.util.Date;
 
 public final class ReminderTask {
 	
@@ -47,11 +48,11 @@ public final class ReminderTask {
 		mBody = body;
 	}
 	
-	public Calendar getDate() {
+	public Date getDate() {
 		return mDateTime;
 	}
 	
-	public void setDate(Calendar date) {
+	public void setDate(Date date) {
 		mDateTime = date;
 	}
 	

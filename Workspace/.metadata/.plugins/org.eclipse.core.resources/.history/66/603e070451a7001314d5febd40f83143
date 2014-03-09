@@ -2,24 +2,19 @@ package com.example.taskreminder;
 
 import java.lang.String;
 import java.util.Calendar;
+import java.util.Date;
 
 public final class ReminderTask {
 	
 	private String mTitle = "";
 	private String mBody = "";
-	private Calendar mDateTime = Calendar.getInstance();		
-			
-			
-			
-			
-			
-			
-			
-			
-
+	private Calendar mDateTime = new java.util.Calendar();
 	private long mId = -1;
 	
 	public ReminderTask() {
+		mDateTime.set(Calendar.YEAR, 2014);
+		mDateTime.set(Calendar.MONTH, Calendar.DECEMBER);
+		mDateTIme.set(Calendar.DAY_OF_MONTH, 25);
 	}
 	
 	
@@ -47,11 +42,11 @@ public final class ReminderTask {
 		mBody = body;
 	}
 	
-	public Calendar getDate() {
+	public Date getDate() {
 		return mDateTime;
 	}
 	
-	public void setDate(Calendar date) {
+	public void setDate(Date date) {
 		mDateTime = date;
 	}
 	

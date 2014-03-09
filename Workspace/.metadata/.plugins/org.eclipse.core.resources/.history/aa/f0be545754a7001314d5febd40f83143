@@ -76,7 +76,7 @@ public class MainActivity extends ListActivity {
 					ReminderTask reminderTask = ReminderIntentAdapter.Read(data);
 
 					reminderTask = mDbHelper.save(reminderTask);
-					fillData();
+					
 				default:
 					
 			}

@@ -2,7 +2,6 @@ package com.example.taskreminder;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -56,11 +55,9 @@ public class RemindersDbAdapter {
 		return this;
 	}
 	
-	public ReminderTask save(ReminderTask reminderTask) {
+	public ReminderTask create(ReminderTask reminderTask) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_TITLE, reminderTask.getTitle());
-		initialValues.put(KEY_BODY, reminderTask.getBody());
-		initialValues.put(KEY_DATE_TIME, reminderTask.getDate().toString());
 		
 		long id = mDb.insert(DATABASE_TABLE, null, initialValues);
 		reminderTask.setId(id);
@@ -69,10 +66,5 @@ public class RemindersDbAdapter {
 	
 	public void close() {
 		mDbHelper.close();
-	}
-	
-	
-	public Cursor allItemsCursor() {
-		return mDb.query(true, DATABASE_TABLE, new String[] { KEY_ROWID, KEY_TITLE, KEY_BODY, KEY_DATE_TIME}, null, null, null, null, null, null);
 	}
 }

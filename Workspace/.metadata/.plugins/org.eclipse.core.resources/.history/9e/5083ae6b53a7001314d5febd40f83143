@@ -75,4 +75,5 @@ public class RemindersDbAdapter {
 	public Cursor allItemsCursor() {
 		return mDb.query(true, DATABASE_TABLE, new String[] { KEY_ROWID, KEY_TITLE, KEY_BODY, KEY_DATE_TIME}, null, null, null, null, null, null);
 	}
+	}
 }

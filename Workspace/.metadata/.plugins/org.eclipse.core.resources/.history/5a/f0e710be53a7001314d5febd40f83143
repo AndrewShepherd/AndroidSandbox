@@ -8,7 +8,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.widget.ArrayAdapter;
 
 
 public class MainActivity extends ListActivity {
@@ -22,20 +22,13 @@ public class MainActivity extends ListActivity {
         
         mDbHelper = new RemindersDbAdapter(this);
         mDbHelper.open();
-        fillData();
-    }
-
-
-
-
-	private void fillData() {
-		Cursor cursor = mDbHelper.allItemsCursor();
+        Cursor cursor = mDbHelper.allItemsCursor();
         
         SimpleCursorAdapter reminders = new SimpleCursorAdapter(this, R.layout.reminder_row, cursor, new String[] { RemindersDbAdapter.KEY_TITLE }, new int[] { R.id.text1 } );
         
      
         super.setListAdapter(reminders);
-	}
+    }
 
     
     
@@ -68,15 +61,20 @@ public class MainActivity extends ListActivity {
 
 
 
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == RESULT_OK) {
 			switch(requestCode) {
 				case RequestCodes.ACTIVITY_CREATE :
+					Log.d("TaskReminder", "Handling the activity create result");
 					ReminderTask reminderTask = ReminderIntentAdapter.Read(data);
-
-					reminderTask = mDbHelper.save(reminderTask);
-					fillData();
+					Log.d("TaskReminder", "Reminder title is " + reminderTask.getTitle());
+					RemindersDbAdapter adapter = new RemindersDbAdapter(this);
+					adapter.open();
+					reminderTask = adapter.save(reminderTask);
+					adapter.close();
+					
 				default:
 					
 			}
