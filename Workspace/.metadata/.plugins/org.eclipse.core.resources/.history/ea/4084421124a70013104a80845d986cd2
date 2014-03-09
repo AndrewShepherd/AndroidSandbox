@@ -1,0 +1,17 @@
+package com.example.taskreminder;
+
+import java.lang.String;
+
+public final class ReminderTask {
+	
+	private String mTitle = "";
+	
+	public void setTitle(String title) {
+		mTitle = title;
+	}
+	
+	public String getTitle() {
+		return mTitle;
+	}
+
+}

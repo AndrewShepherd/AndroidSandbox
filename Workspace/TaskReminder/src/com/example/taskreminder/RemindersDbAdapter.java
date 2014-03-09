@@ -1,5 +1,6 @@
 package com.example.taskreminder;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -52,6 +53,15 @@ public class RemindersDbAdapter {
 		mDbHelper = new DatabaseHelper(mCtx);
 		mDb = mDbHelper.getWritableDatabase();
 		return this;
+	}
+	
+	public ReminderTask create(ReminderTask reminderTask) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_TITLE, reminderTask.getTitle());
+		
+		long id = mDb.insert(DATABASE_TABLE, null, initialValues);
+		reminderTask.setId(id);
+		return reminderTask;
 	}
 	
 	public void close() {
