@@ -67,12 +67,25 @@ public class RemindersDbAdapter {
 		return reminderTask;
 	}
 	
+	public boolean deleteReminder(long rowId) {
+		return mDb.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+	}
+	
 	public void close() {
 		mDbHelper.close();
 	}
 	
 	
 	public Cursor allItemsCursor() {
-		return mDb.query(true, DATABASE_TABLE, new String[] { KEY_ROWID, KEY_TITLE, KEY_BODY, KEY_DATE_TIME}, null, null, null, null, null, null);
+		return mDb.query(true, 
+							DATABASE_TABLE, 
+							new String[] { 
+								KEY_ROWID, 
+								KEY_TITLE, 
+								KEY_BODY, 
+								KEY_DATE_TIME
+								}, 
+								null, null, null, null, null, null
+						);
 	}
 }

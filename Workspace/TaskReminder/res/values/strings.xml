@@ -9,5 +9,6 @@
     <string name="confirm">Confirm</string>
     <string name="edit_activity">Edit Activity</string>
     <string name="menu_insert">Insert</string>
+    <string name="menu_delete">Delete</string>
 
 </resources>

@@ -6,8 +6,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.Toast;
 
 
 
@@ -19,11 +25,44 @@ public class MainActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reminder_list);
+        registerForContextMenu(getListView());
         
         mDbHelper = new RemindersDbAdapter(this);
         mDbHelper.open();
         fillData();
     }
+
+    
+
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch(item.getItemId()) {
+		case R.id.menu_delete:
+			AdapterContextMenuInfo info = 
+				(AdapterContextMenuInfo)item.getMenuInfo();
+			
+			Toast toast = Toast.makeText(this, "You pressed delete for id " + info.id, 2000);
+			toast.show();
+			mDbHelper.deleteReminder(info.id);
+			fillData();
+			return true;
+		}
+		return super.onContextItemSelected(item);
+	}
+
+
+
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		// TODO Auto-generated method stub
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater mi = getMenuInflater();
+		mi.inflate(R.menu.list_menu_item_longpress, menu);
+	}
 
 
 
@@ -31,9 +70,15 @@ public class MainActivity extends ListActivity {
 	private void fillData() {
 		Cursor cursor = mDbHelper.allItemsCursor();
         
-        SimpleCursorAdapter reminders = new SimpleCursorAdapter(this, R.layout.reminder_row, cursor, new String[] { RemindersDbAdapter.KEY_TITLE }, new int[] { R.id.text1 } );
-        
-     
+        SimpleCursorAdapter reminders = new SimpleCursorAdapter(
+        				this, 
+        				R.layout.reminder_row, 
+        				cursor, 
+        				new String[] { 
+        							RemindersDbAdapter.KEY_TITLE 
+        				}, 
+        				new int[] { R.id.text1 } 
+        				);
         super.setListAdapter(reminders);
 	}
 

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extracts string &apos;Delete&apos; into R.string.menu_delete" description="Extracts string &apos;Delete&apos; into R.string.menu_delete" file="/TaskReminder/res/menu/list_menu_item_longpress.xml" flags="6" id="com.android.ide.eclipse.adt.refactoring.extract.string" mode="EDIT_SOURCE" proj="/TaskReminder" rplc-all-java="false" rplc-all-xml="false" sel-end="169" sel-start="148" stamp="1395655880924" tok-esc="Delete" xml-attr-name="android:title"/>
+</session>

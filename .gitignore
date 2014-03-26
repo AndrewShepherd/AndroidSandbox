@@ -27,3 +27,12 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+
+# Plugins
+
+#This entry works
+Workspace/.metadata/.plugins/org.eclipse.core.resources/.history/
+
+#This entry does not work!
+Workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/TaskReminder/.indexes/a0/5f/history.index
