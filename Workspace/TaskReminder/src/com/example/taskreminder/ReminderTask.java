@@ -10,12 +10,6 @@ public final class ReminderTask {
 	private Calendar mDateTime = Calendar.getInstance();		
 			
 			
-			
-			
-			
-			
-			
-			
 
 	private long mId = -1;
 	

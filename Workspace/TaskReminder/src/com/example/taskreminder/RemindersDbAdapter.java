@@ -1,5 +1,8 @@
 package com.example.taskreminder;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -16,6 +19,8 @@ public class RemindersDbAdapter {
 	public static final String KEY_DATE_TIME = "reminder_date_time";
 	public static final String KEY_ROWID = "_id";
 	
+	
+	private final ArrayList<RemindersDbAdapterListener> mListeners = new ArrayList<RemindersDbAdapterListener>();
 	
 	
 	private class DatabaseHelper extends SQLiteOpenHelper {
@@ -49,11 +54,27 @@ public class RemindersDbAdapter {
 	public RemindersDbAdapter(Context ctx) {
 		mCtx = ctx;
 	}
+	
+	public void addListener(RemindersDbAdapterListener listener) {
+		mListeners.add(listener);
+	}
+	
+	public Context getContext() {
+		return mCtx;
+	}
 
 	public RemindersDbAdapter open() throws android.database.SQLException {
 		mDbHelper = new DatabaseHelper(mCtx);
 		mDb = mDbHelper.getWritableDatabase();
 		return this;
+	}
+	
+	void fireChangeEvent() {
+		Iterator<RemindersDbAdapterListener> iterator = mListeners.iterator();
+		while(iterator.hasNext()) {
+			RemindersDbAdapterListener listener = iterator.next();
+			listener.onDataChange();
+		}
 	}
 	
 	public ReminderTask save(ReminderTask reminderTask) {
@@ -64,11 +85,16 @@ public class RemindersDbAdapter {
 		
 		long id = mDb.insert(DATABASE_TABLE, null, initialValues);
 		reminderTask.setId(id);
+		fireChangeEvent();
 		return reminderTask;
 	}
 	
 	public boolean deleteReminder(long rowId) {
-		return mDb.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+		boolean success = mDb.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+		if(success) {
+			fireChangeEvent();
+		}
+		return success;
 	}
 	
 	public void close() {
@@ -88,4 +114,6 @@ public class RemindersDbAdapter {
 								null, null, null, null, null, null
 						);
 	}
+	
+	
 }

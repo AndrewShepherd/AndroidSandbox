@@ -1,6 +1,9 @@
 package com.example.taskreminder;
 
+
+
 import android.os.Bundle;
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -21,38 +24,44 @@ public class MainActivity extends ListActivity {
 
 	RemindersDbAdapter mDbHelper;
 	
+    private static class RequestCodes
+    {
+    	final static int ACTIVITY_CREATE = 0;
+    }
+	
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reminder_list);
         registerForContextMenu(getListView());
         
-        mDbHelper = new RemindersDbAdapter(this);
-        mDbHelper.open();
-        fillData();
+
     }
 
     
 
+    public RemindersDbAdapter getDbHelper() {
+    	if(mDbHelper == null) {
+    		mDbHelper = new RemindersDbAdapter(this.getBaseContext());
+    		mDbHelper.open();
+    	}
+    	return mDbHelper;
+    }
+    
 
 	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		switch(item.getItemId()) {
-		case R.id.menu_delete:
-			AdapterContextMenuInfo info = 
-				(AdapterContextMenuInfo)item.getMenuInfo();
-			
-			Toast toast = Toast.makeText(this, "You pressed delete for id " + info.id, 2000);
-			toast.show();
-			mDbHelper.deleteReminder(info.id);
-			fillData();
-			return true;
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId())
+		{
+			case R.id.menu_insert:
+				Intent startActivityIntent = new Intent(this.getBaseContext(), ReminderEditActivity.class);
+				startActivityForResult(startActivityIntent, RequestCodes.ACTIVITY_CREATE);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
-		return super.onContextItemSelected(item);
 	}
-
-
 
 
 	@Override
@@ -62,28 +71,9 @@ public class MainActivity extends ListActivity {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		MenuInflater mi = getMenuInflater();
 		mi.inflate(R.menu.list_menu_item_longpress, menu);
+		
 	}
 
-
-
-
-	private void fillData() {
-		Cursor cursor = mDbHelper.allItemsCursor();
-        
-        SimpleCursorAdapter reminders = new SimpleCursorAdapter(
-        				this, 
-        				R.layout.reminder_row, 
-        				cursor, 
-        				new String[] { 
-        							RemindersDbAdapter.KEY_TITLE 
-        				}, 
-        				new int[] { R.id.text1 } 
-        				);
-        super.setListAdapter(reminders);
-	}
-
-    
-    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,43 +83,20 @@ public class MainActivity extends ListActivity {
     }
 
     
-    private static class RequestCodes
-    {
-    	final static int ACTIVITY_CREATE = 0;
-    }
-
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId())
-		{
-			case R.id.menu_insert:
-				Intent startActivityIntent = new Intent(this, ReminderEditActivity.class);
-				startActivityForResult(startActivityIntent, RequestCodes.ACTIVITY_CREATE);
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
-	}
-
-
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(resultCode == RESULT_OK) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(resultCode == Activity.RESULT_OK) {
 			switch(requestCode) {
 				case RequestCodes.ACTIVITY_CREATE :
 					ReminderTask reminderTask = ReminderIntentAdapter.Read(data);
+					reminderTask = getDbHelper().save(reminderTask);
 
-					reminderTask = mDbHelper.save(reminderTask);
-					fillData();
 				default:
 					
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-    
-	
     
     
 }
